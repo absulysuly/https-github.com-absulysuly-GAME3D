@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from 'react';
+'use client';
+
+import { useEffect, useState } from 'react';
+import type { GameConcept } from '@/types';
 
 interface JsonModalProps {
   isOpen: boolean;
   onClose: () => void;
-  jsonData: object | null;
+  jsonData: GameConcept | null;
 }
 
-const JsonModal: React.FC<JsonModalProps> = ({ isOpen, onClose, jsonData }) => {
+export default function JsonModal({ isOpen, onClose, jsonData }: JsonModalProps) {
   const [copyButtonText, setCopyButtonText] = useState('Copy to Clipboard');
 
   useEffect(() => {
@@ -54,43 +57,43 @@ const JsonModal: React.FC<JsonModalProps> = ({ isOpen, onClose, jsonData }) => {
   };
 
   return (
-    <div 
-      className="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50 p-4"
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4"
       onClick={onClose}
       aria-modal="true"
       role="dialog"
     >
-      <div 
-        className="bg-gray-800 text-gray-200 rounded-lg shadow-xl w-full md:w-2/3 lg:w-1/2 max-h-[90vh] flex flex-col border border-gray-700"
-        onClick={e => e.stopPropagation()} // Prevent closing when clicking inside the modal
+      <div
+        className="flex max-h-[90vh] w-full flex-col rounded-lg border border-slate-700 bg-slate-900/95 text-slate-100 shadow-xl md:w-2/3 lg:w-1/2"
+        onClick={(event) => event.stopPropagation()}
       >
-        <header className="flex justify-between items-center p-4 border-b border-gray-700">
+        <header className="flex items-center justify-between border-b border-slate-700 p-4">
           <h2 className="text-xl font-bold text-yellow-500">Generated JSON Data</h2>
-          <button 
-            onClick={onClose} 
-            className="text-gray-400 hover:text-white text-2xl leading-none"
+          <button
+            onClick={onClose}
+            className="text-2xl leading-none text-slate-400 transition hover:text-white"
             aria-label="Close modal"
           >
             &times;
           </button>
         </header>
-        <main className="p-4 overflow-y-auto">
-          <pre className="bg-gray-900 p-4 rounded-md text-sm whitespace-pre-wrap break-words">
+        <main className="overflow-y-auto p-4">
+          <pre className="whitespace-pre-wrap break-words rounded-md bg-slate-950 p-4 text-sm">
             <code>
               {formattedJson}
             </code>
           </pre>
         </main>
-        <footer className="flex flex-wrap justify-end items-center p-4 border-t border-gray-700 gap-4">
+        <footer className="flex flex-wrap items-center justify-end gap-4 border-t border-slate-700 p-4">
           <button
             onClick={handleCopy}
-            className="bg-yellow-600 text-white px-4 py-2 rounded-md hover:bg-yellow-700 transition-colors duration-200"
+            className="rounded-md bg-yellow-500/90 px-4 py-2 text-sm font-semibold text-slate-950 transition-colors duration-200 hover:bg-yellow-400"
           >
             {copyButtonText}
           </button>
           <button
             onClick={handleDownload}
-            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors duration-200"
+            className="rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition-colors duration-200 hover:bg-blue-500"
           >
             Download JSON
           </button>
@@ -98,6 +101,4 @@ const JsonModal: React.FC<JsonModalProps> = ({ isOpen, onClose, jsonData }) => {
       </div>
     </div>
   );
-};
-
-export default JsonModal;
+}
