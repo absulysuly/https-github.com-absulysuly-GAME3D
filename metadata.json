@@ -1,0 +1,5 @@
+{
+  "name": "Peshmerga: The Golden Square - Game Concept",
+  "description": "An interactive web page that generates and displays a detailed game concept for 'Peshmerga: The Golden Square', a tactical first-person shooter, using the Gemini API to structure the design document.",
+  "requestFramePermissions": []
+}
