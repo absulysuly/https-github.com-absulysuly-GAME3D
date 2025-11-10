@@ -1,18 +1,16 @@
 
-import React from 'react';
+import type { ReactNode } from 'react';
 
 interface CardProps {
   title: string;
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
-const Card: React.FC<CardProps> = ({ title, children }) => {
+export default function Card({ title, children }: CardProps) {
   return (
-    <div className="bg-gray-800 border border-gray-700 rounded-lg p-6 shadow-lg transition-transform duration-300 hover:scale-105 hover:border-yellow-600">
-      <h3 className="text-xl font-semibold text-yellow-400 mb-2">{title}</h3>
-      <div className="text-gray-300">{children}</div>
+    <div className="rounded-lg border border-slate-800 bg-slate-900/80 p-6 shadow-lg transition-transform duration-300 hover:scale-105 hover:border-yellow-600">
+      <h3 className="mb-2 text-xl font-semibold text-yellow-400">{title}</h3>
+      <div className="text-slate-200">{children}</div>
     </div>
   );
-};
-
-export default Card;
+}
