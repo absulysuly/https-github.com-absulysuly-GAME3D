@@ -1,18 +1,22 @@
 
+import React from 'react';
+
 interface LocationCardProps {
   name: string;
   description: string;
   imageUrl: string;
 }
 
-export default function LocationCard({ name, description, imageUrl }: LocationCardProps) {
+const LocationCard: React.FC<LocationCardProps> = ({ name, description, imageUrl }) => {
   return (
-    <div className="overflow-hidden rounded-lg border border-slate-800 bg-slate-900/70 shadow-lg transition-shadow duration-300 hover:shadow-yellow-500/30">
-      <img src={imageUrl} alt={`Image of ${name}`} className="h-48 w-full object-cover" />
+    <div className="bg-gray-800 rounded-lg overflow-hidden shadow-lg border border-gray-700 transition-shadow duration-300 hover:shadow-yellow-500/20">
+      <img src={imageUrl} alt={`Image of ${name}`} className="w-full h-48 object-cover" />
       <div className="p-6">
-        <h3 className="mb-2 text-2xl font-bold text-yellow-400">{name}</h3>
-        <p className="text-slate-200">{description}</p>
+        <h3 className="text-2xl font-bold text-yellow-400 mb-2">{name}</h3>
+        <p className="text-gray-300">{description}</p>
       </div>
     </div>
   );
-}
+};
+
+export default LocationCard;
