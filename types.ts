@@ -1,309 +1,313 @@
-
-export interface CoreGameVision {
-  style: string;
-  world: string;
-  tone: string;
-  languages: string[];
-  primaryMaps: string[];
-}
-
-export interface GameConcept {
-  coreGameVision: CoreGameVision;
-  executiveSummary: string;
-  fullRoadmap: string;
-  title: string;
-  narrative: Narrative;
-  gameplayLoop: GameplayLoop;
-  visualStyle: VisualStyle;
-  locations: Location[];
-  missions: Mission[];
-  levelBlueprints: LevelBlueprint[];
-  characters: Character[];
-  villain: Villain;
-  weapons: Weapon[];
-  equipment: Equipment[];
-  enemyFactions: EnemyFaction[];
-  audio: AudioDetails;
-  technicalArchitecture: TechnicalArchitecture;
-  enemyAI: EnemyAI;
-  assetCreationPipeline: AssetCreationPipeline;
-  qaBuildDeploymentPlan: QABuildDeploymentPlan;
-  notesForArtists: string;
-  culturalAuthenticityChecklist: string;
-  multiplayerModule?: MultiplayerModule;
-  replitReadyOutputs: ReplitReadyOutputs;
-  trailerScript: TrailerScript;
-  openingCinematic: OpeningCinematic;
-  sampleVoiceLines: SampleVoiceLine[];
-  uiux: UIUX;
-  inventorySystem: InventorySystem;
-  skillTree: SkillTree;
-  weaponUpgradeTree: WeaponUpgradeTree;
-  companionCommands: CompanionCommands;
-  bossMechanics: BossMechanics;
-  conceptArtPrompts: ConceptArtPrompt[];
-  cinematicCameraSystem: CinematicCameraSystem;
-}
-
-export interface Narrative {
-  mainStoryline: string;
-}
-
-export interface GameplayLoop {
-  coreLoop: string[];
-  uniqueSystems: string[];
-}
-
-export interface VisualStyle {
-  artStyle: string;
-  colorPalette: string;
-}
-
-export interface Location {
-  name: string;
+// From Sixth Movement
+export interface CutsceneScript {
+  scene: string;
   description: string;
+  dialogue: { character: string, line: string, language: string, note?: string }[];
 }
 
-export interface Mission {
-  title: string;
-  description: string;
-}
-
-export interface LevelBlueprint {
-  title: string;
-  time: string;
-  vibe: string;
-  missionType: string;
-  uniqueMechanics: string[];
-  keyScene: string;
-}
-
-export interface Character {
-  name: string;
-  title: string;
-  role: string;
-  age?: number;
-  born?: string;
-  personality: string;
-  battleStyle?: string;
-  motivation?: string;
-  look: string[];
-  signatureLine: string;
-  backstory?: string;
-  arc?: string;
-  languages?: string[];
-}
-
-export interface Villain {
-  codename: string;
-  title: string;
-  voice: string;
-  accent: string;
-  motivation: string;
-  depth: string;
-  style: string[];
-  chillingLine: string;
-}
-
-export interface Weapon {
-  name: string;
-  type: string;
-  description: string;
-  threeDReference: string;
-  specs: string;
-  soundDescription: string;
-  physicsSpecs: string;
-  recoilPattern: string;
-  reloadAnimation: string;
-  environmentalAcoustics: string;
-}
-
-export interface Equipment {
-  name: string;
-  type: string;
-  description: string;
-  threeDReference: string;
-}
-
-export interface EnemyFaction {
-  name: string;
-  description: string;
-  hierarchy?: string[];
-}
-
-export interface SoundtrackMoodboard {
-  instruments: string[];
-  keyTracks: {
-    title: string;
-    description: string;
-  }[];
-}
-
-export interface AudioDetails {
-  moodboard: SoundtrackMoodboard;
-  soundEffects: string;
-}
-
-export interface EngineChoice {
-  engine: string;
-  reasoning: string;
-}
-
-export interface CoreSystem {
-  name: string;
-  description: string;
-}
-
-export interface TechnicalArchitecture {
-  engineChoice: EngineChoice;
-  coreSystems: CoreSystem[];
-}
-
-export interface EnemyAI {
-    patrolChaseEngageRetreat: string;
-    flankingBehavior: string;
-    urbanCornerPeek: string;
-    grenadeLogic: string;
-    suppressiveFire: string;
-    noiseReaction: string;
-    nightVisionLimitations: string;
-    fearMoraleSystem: string;
-    behaviorTreeDiagram: string;
-    codeSkeleton: string;
-    aiStatesAndTransitions: string;
-    debugModeScript: string;
-}
-
-export interface AssetCategory {
-  description: string;
-  assetList: string[];
-}
-
-export interface AssetPipelineDetails {
-  namingConventions: string;
-  polycountTarget: string;
-  lodLevels: string;
-  textureMapTypes: string[];
-}
-
-export interface AssetCreationPipeline {
-  characterAssets: AssetCategory;
-  weaponAssets: AssetCategory;
-  environmentAssets: AssetCategory;
-  vehicleAssets: AssetCategory;
-  audioAssets: AssetCategory;
-  pipelineDetails: AssetPipelineDetails;
-}
-
-export interface QABuildDeploymentPlan {
-  testingProtocols: string;
-  optimizationGuide: string;
-  webglMemoryGuidelines: string;
-  buildPipeline: string;
-  postLaunchUpdateRoadmap: string;
-  performanceBenchmarks: string;
-}
-
-export interface MultiplayerModule {
-  coOpMode: string;
-  leaderboards: string;
-  spectatorMode: string;
-  lobbySystem: string;
-  netcodeStructure: string;
-  antiCheatBasics: string;
-}
-
-export interface CodeTemplate {
-  filePath: string;
+export interface VoiceLine {
   language: string;
-  code: string;
+  line: string;
+  translation: string;
 }
 
-export interface ReplitReadyOutputs {
+export interface VoiceActingScript {
+  character: string;
+  type: string;
+  lines: VoiceLine[];
+}
+
+export interface VoiceActingScriptPack {
+  scripts: VoiceActingScript[];
+}
+
+export interface GreyboxMap {
+  mission: string;
+  layout: string;
+}
+
+export interface CharacterModelingSheet {
+  character: string;
+  details: { key: string; value: string }[];
+}
+
+export interface PolycountGuidelineCategory {
+  category: string;
+  guidelines: { item: string; polycount: string }[];
+}
+
+export interface AIStateMachine {
+  type: string;
+  states: string[];
+  details: string[];
+}
+
+export interface DynamicWeather {
+  presets: string[];
+  effects: string[];
+}
+
+export interface CombatBalanceSheet {
+  playerDamage: { weapon: string; damage: string }[];
+  enemyArmor: { level: string; absorption: string }[];
+}
+
+export interface SFXProductionBible {
+  weaponSounds: string[];
+  footsteps: string[];
+  voices: string[];
+}
+
+export interface MusicProductionMap {
+  emotionalZones: string[];
+}
+
+// From Seventh Movement
+export interface GDDSection {
+  title: string;
+  pages: string;
+  content: string[];
+}
+
+export interface TVEpisode {
+  episodeNumber: number;
+  title: string;
+}
+
+export interface TVSeriesAdaptation {
+  seasonTitle: string;
+  episodes: TVEpisode[];
+  details: string[];
+}
+
+export interface DLC {
+  year: number;
+  title: string;
+  content: string[];
+}
+
+export interface DialogueChoice {
+  choice: string;
+  response: string;
+}
+
+export interface DialogueScene {
+  character: string;
+  trigger: string;
+  choices: DialogueChoice[];
+}
+
+export interface Philosophy {
+  principles: string[];
+}
+
+export interface EnemyPhilosophyBible {
+  falconPhilosophy: Philosophy;
+  sirwanCounterPhilosophy: Philosophy;
   description: string;
-  folderStructure: string;
-  codeTemplates: CodeTemplate[];
 }
 
-export interface TrailerScript {
-  openingShot: string;
-  sirwanVO: string;
-  falconVO: string;
-  actionCuts: string[];
-  titleCard: string;
-  finalLine: string;
-}
-
-export interface OpeningCinematic {
-    scene: string;
-    sirwanVO: string;
-    arazShout: string;
-    cameraDirections: string;
-    titleCard: string;
-}
-
-export interface SampleVoiceLine {
-    character: string;
-    language: string;
-    line: string;
-}
-
-export interface UIUX {
-  styleLanguage: string[];
-  mainMenu: {
-    sceneDescription: string;
-    buttons: string[];
-    sfx: string[];
-  };
-  inGameHUD: string[];
-}
-
-export interface InventorySystem {
-  categories: string[];
-  dynamicWeightSystem: string[];
-}
-
-export interface SkillBranch {
+export interface ColorPaletteItem {
   name: string;
-  philosophy: string;
-  skills: string[];
+  hex: string;
 }
 
-export interface SkillTree {
-  branches: SkillBranch[];
+export interface ArtIdentityLanguage {
+  colorPalette: ColorPaletteItem[];
+  shapeLanguage: string[];
+  lightingLanguage: string[];
 }
 
-export interface WeaponUpgradeTree {
-  barrelMods: string[];
-  optics: string[];
-  bodyMods: string[];
-  ammoTypes: string[];
+export interface MusicAlbumFull {
+  tracks: string[];
 }
 
-export interface CompanionCommands {
-  basic: string[];
-  advanced: string[];
+// From Eighth Movement
+export interface ScreenplayPart {
+  type: 'NARRATION' | 'DIALOGUE' | 'ACTION' | 'SFX' | 'CAMERA' | 'CUT_TO';
+  character?: string;
+  language?: string;
+  content: string;
+}
+export interface ScreenplayScene {
+  sceneNumber: number;
+  title: string;
+  setting: string;
+  parts: ScreenplayPart[];
+}
+export interface MainCinematicScreenplay {
+  filmTitle: string;
+  runtime: string;
+  screenplayStyle: string;
+  scenes: ScreenplayScene[];
 }
 
-export interface BossMechanics {
-  theFalcon: {
-    description: string;
-    mechanics: string[];
-    finalMoment: string;
+export interface MissionScreenplay {
+  missionNumber: number;
+  title: string;
+  objective: string;
+  setting?: string;
+  sceneType?: string;
+  cameraLanguage?: string[];
+  cinematicNotes?: string[];
+  scriptedMoments: { title: string, description: string }[];
+  endingCutscene: string;
+}
+
+export interface CameraBlueprint {
+  shotName: string;
+  description: string[];
+  meaning: string;
+}
+
+export interface CombatChoreography {
+  character: string;
+  stylePoints: string[];
+}
+
+export interface TrailerScriptPart {
+  type: 'V.O.' | 'CUT' | 'TITLE_CARD';
+  character?: string;
+  language?: string;
+  content: string;
+}
+export interface OfficialTrailerScript {
+  parts: TrailerScriptPart[];
+}
+
+export interface CulturalAuthenticityChecklist {
+  pillars: string[];
+}
+
+// From Ninth Movement
+export interface CompanionDynamicsSystem {
+  description: string;
+  trackedStats: { stat: string; description: string }[];
+  exampleEvents: { event: string; impact: string }[];
+}
+
+export interface EmotionalBond {
+  title: string;
+  description: string;
+  exampleScene: string;
+}
+
+export interface EmotionalBonds {
+  bonds: EmotionalBond[];
+}
+
+export interface BranchImpact {
+  impact: string;
+  consequence: string;
+}
+
+export interface DecisionChoice {
+  choice: string;
+  impacts: BranchImpact[];
+}
+
+export interface KeyDecisionNode {
+  nodeId: string;
+  title: string;
+  mission: string;
+  choices: DecisionChoice[];
+}
+
+export interface BranchingNarrativeTrees {
+  description: string;
+  nodes: KeyDecisionNode[];
+}
+
+export interface DynamicCinematics {
+  description: string;
+  exampleScene: {
+    scene: string;
+    highLoyalty: string;
+    lowLoyalty: string;
   };
-  theRaven: {
-    description: string;
-    mechanics: string[];
-  };
 }
 
-export interface ConceptArtPrompt {
-    title: string;
-    prompt: string;
+export interface AlternateEnding {
+  endingId: string;
+  title: string;
+  conditions: string;
+  outcome: string;
 }
 
-export interface CinematicCameraSystem {
-    conversation: string[];
-    combat: string[];
-    cutscenes: string[];
+export interface EmotionalArcMapEntry {
+  mission: string;
+  sirwan: string;
+  nadia: string;
+  araz: string;
+  shakar: string;
+}
+
+export interface EmotionalArcMapping {
+  description: string;
+  mapping: EmotionalArcMapEntry[];
+}
+
+export interface PsychologicalProfile {
+  character: string;
+  title: string;
+  coreFear: string;
+  coreDesire: string;
+  defenseMechanism: string;
+  triggeredBy: string;
+}
+
+export interface DynamicNarrativeLogic {
+  description: string;
+  trackedVariables: string[];
+  dynamicChanges: string[];
+}
+
+export interface HeartsOfTheMountains {
+  companionDynamicsSystem: CompanionDynamicsSystem;
+  subtleRomanceAndEmotionalBonds: EmotionalBonds;
+  branchingNarrativeTrees: BranchingNarrativeTrees;
+  dynamicCinematics: DynamicCinematics;
+  alternateEndings: AlternateEnding[];
+  emotionalArcMapping: EmotionalArcMapping;
+  psychologicalProfiles: PsychologicalProfile[];
+  dynamicNarrativeLogic: DynamicNarrativeLogic;
+}
+
+export interface CinematicScripture {
+  mainCinematicScreenplay: MainCinematicScreenplay;
+  missionScreenplays: MissionScreenplay[];
+  cameraBlueprintLibrary: CameraBlueprint[];
+  combatChoreography: CombatChoreography[];
+  officialTrailerScript: OfficialTrailerScript;
+  culturalAuthenticityChecklist: CulturalAuthenticityChecklist;
+}
+
+export interface TitanCodex {
+  openingCutsceneScript: CutsceneScript;
+  voiceActingScriptPack: VoiceActingScriptPack;
+  levelDesignGreyboxMaps: GreyboxMap[];
+  characterModelingSheets: CharacterModelingSheet[];
+  polycountGuidelines: PolycountGuidelineCategory[];
+  aiStateMachines: AIStateMachine[];
+  dynamicWeatherSystem: DynamicWeather;
+  combatBalanceSheets: CombatBalanceSheet;
+  sfxProductionBible: SFXProductionBible;
+  musicProductionMap: MusicProductionMap;
+}
+
+export interface EternalScripture {
+  gddMasterIndex: GDDSection[];
+  tvSeriesAdaptation: TVSeriesAdaptation;
+  dlcRoadmap: DLC[];
+  companionDialogueTrees: DialogueScene[];
+  enemyPhilosophyBible: EnemyPhilosophyBible;
+  artIdentityLanguage: ArtIdentityLanguage;
+  musicAlbum: MusicAlbumFull;
+}
+
+export interface GameData {
+  titanCodex: TitanCodex;
+  eternalScripture: EternalScripture;
+  cinematicScripture: CinematicScripture;
+  heartsOfTheMountains: HeartsOfTheMountains;
 }
