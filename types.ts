@@ -2,13 +2,19 @@
 export interface CutsceneScript {
   scene: string;
   description: string;
-  dialogue: string[];
+  dialogue: string[]; // Simplified from array of objects
+}
+
+export interface VoiceLine {
+  language: string;
+  line: string;
+  translation: string;
 }
 
 export interface VoiceActingScript {
   character: string;
   type: string;
-  lines: string[];
+  lines: string[]; // Simplified from array of objects
 }
 
 export interface VoiceActingScriptPack {
@@ -144,7 +150,7 @@ export interface MissionScreenplay {
   sceneType?: string;
   cameraLanguage?: string[];
   cinematicNotes?: string[];
-  scriptedMoments: { title: string, description: string }[];
+  scriptedMoments: string[]; // Simplified from array of objects
   endingCutscene: string;
 }
 
@@ -152,11 +158,6 @@ export interface CameraBlueprint {
   shotName: string;
   description: string[];
   meaning: string;
-}
-
-export interface CombatChoreography {
-  character: string;
-  stylePoints: string[];
 }
 
 export interface TrailerScriptPart {
@@ -171,6 +172,12 @@ export interface OfficialTrailerScript {
 
 export interface CulturalAuthenticityChecklist {
   pillars: string[];
+}
+
+// New interface for CombatChoreography
+export interface CombatChoreography {
+  character: string;
+  stylePoints: string[];
 }
 
 // From Ninth Movement

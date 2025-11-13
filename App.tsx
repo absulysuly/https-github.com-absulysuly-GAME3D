@@ -30,29 +30,35 @@ const App: React.FC = () => {
   }, []);
 
   const renderScreenplayPart = (part: ScreenplayPart, index: number) => {
-    switch(part.type) {
-      case 'CAMERA':
-      case 'ACTION':
-      case 'SFX':
-      case 'CUT_TO':
-        return <p key={index} className="text-gray-400 my-2">{part.content}</p>;
-      case 'NARRATION':
-        return (
-          <div key={index} className="my-3 ml-12">
-            <p className="font-bold">{part.character} (V.O.)</p>
-            <p className="italic text-gray-300">"{part.content}"</p>
-          </div>
-        );
-      case 'DIALOGUE':
-        return (
-          <div key={index} className="my-3 ml-12">
-            <p className="font-bold">{part.character} ({part.language})</p>
-            <p className="text-gray-300">"{part.content}"</p>
-          </div>
-        );
-      default:
-        return <p key={index}>{part.content}</p>;
+    // This part parsing is based on the simplified ScreenplayPart as a string.
+    // Assuming content will be structured like "TYPE: CHARACTER (LANGUAGE): "LINE""
+    const content = part.content;
+    const regex = /(NARRATION|DIALOGUE|ACTION|SFX|CAMERA|CUT_TO):\s*(.*)/;
+    const match = content.match(regex);
+
+    if (match) {
+      const type = match[1];
+      const details = match[2];
+
+      if (type === 'DIALOGUE' || type === 'NARRATION') {
+        const charRegex = /(.*?)\s*\((.*?)\):\s*"(.*)"/;
+        const charMatch = details.match(charRegex);
+        if (charMatch) {
+          const character = charMatch[1];
+          const language = charMatch[2];
+          const line = charMatch[3];
+          return (
+            <div key={index} className="my-3 ml-12">
+              <p className="font-bold">{character} ({language})</p>
+              <p className="text-gray-300">"{line}"</p>
+            </div>
+          );
+        }
+      } else {
+        return <p key={index} className="text-gray-400 my-2">{details}</p>;
+      }
     }
+    return <p key={index}>{content}</p>; // Fallback
   };
   
   const renderTrailerPart = (part: TrailerScriptPart, index: number) => {
@@ -68,17 +74,48 @@ const App: React.FC = () => {
     }
   }
 
-  const parseVoiceLine = (line: string) => {
-    const match = line.match(/(.*?):\s*"(.*?)"\s*\((.*?)\)/);
+  // Parser for simplified openingCutsceneScript.dialogue strings
+  const parseOpeningCutsceneDialogue = (dialogueString: string) => {
+    const regex = /(.*?)\s*\((.*?)\):\s*"(.*)"\s*(\((.*)\))?/;
+    const match = dialogueString.match(regex);
     if (match) {
-      return { language: match[1].trim(), text: match[2].trim(), translation: match[3].trim() };
+      return {
+        character: match[1],
+        language: match[2],
+        line: match[3],
+        note: match[5] || '',
+      };
     }
-    const simpleMatch = line.match(/(.*?):\s*"(.*)"/);
-    if (simpleMatch) {
-      return { language: simpleMatch[1].trim(), text: simpleMatch[2].trim(), translation: '' };
-    }
-    return { language: 'Info', text: line, translation: '' };
+    return { character: '', language: '', line: dialogueString, note: '' };
   };
+
+  // Parser for simplified voiceActingScriptPack.scripts.lines strings
+  const parseVoiceActingLine = (lineString: string) => {
+    const regex = /(.*?):\s*"(.*?)"\s*\((.*?)\)/;
+    const match = lineString.match(regex);
+    if (match) {
+      return {
+        language: match[1],
+        line: match[2],
+        translation: match[3],
+      };
+    }
+    return { language: '', line: lineString, translation: '' };
+  };
+
+  // Parser for simplified MissionScreenplay.scriptedMoments strings
+  const parseMissionScriptedMoment = (momentString: string) => {
+    const regex = /(.*?):\s*(.*)/;
+    const match = momentString.match(regex);
+    if (match) {
+      return {
+        title: match[1],
+        description: match[2],
+      };
+    }
+    return { title: '', description: momentString };
+  };
+
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -125,18 +162,14 @@ const App: React.FC = () => {
             <Card title={titanCodex.openingCutsceneScript.scene}>
               <p className="italic text-gray-400 mb-4">{titanCodex.openingCutsceneScript.description}</p>
               <div className="space-y-3 border-l-2 border-yellow-700 pl-4">
-                {titanCodex.openingCutsceneScript.dialogue.map((dialogueString, i) => {
-                  const match = dialogueString.match(/(.*?)\s*\((.*?)\):\s*"(.*)"/);
-                  if (match) {
-                    const [, character, language, line] = match;
-                    return (
-                      <div key={i}>
-                        <strong className="text-yellow-400">{character} ({language}):</strong>
-                        <p className="pl-4 italic">"{line}"</p>
-                      </div>
-                    );
-                  }
-                  return <p key={i}>{dialogueString}</p>; // Fallback for unmatched format
+                {titanCodex.openingCutsceneScript.dialogue.map((dString, i) => {
+                  const d = parseOpeningCutsceneDialogue(dString);
+                  return (
+                    <div key={i}>
+                      <strong className="text-yellow-400">{d.character} ({d.language}):</strong>
+                      <p className="pl-4 italic">"{d.line}" {d.note && `(${d.note})`}</p>
+                    </div>
+                  );
                 })}
               </div>
             </Card>
@@ -147,15 +180,15 @@ const App: React.FC = () => {
               {titanCodex.voiceActingScriptPack.scripts.map(script => (
                 <Card key={script.character} title={`${script.character} - ${script.type}`}>
                   <ul className="space-y-2">
-                    {script.lines.map((lineStr, i) => {
-                        const parsed = parseVoiceLine(lineStr);
-                        return (
-                          <li key={i}>
-                            <strong className="text-yellow-500">{parsed.language}:</strong> "{parsed.text}"
-                            {parsed.translation && <em className="text-gray-400 text-sm block">({parsed.translation})</em>}
-                          </li>
-                        );
-                      })}
+                    {script.lines.map((lineString, i) => {
+                      const line = parseVoiceActingLine(lineString);
+                      return (
+                        <li key={i}>
+                          <strong className="text-yellow-500">{line.language}:</strong> "{line.line}"
+                          <em className="text-gray-400 text-sm block">({line.translation})</em>
+                        </li>
+                      );
+                    })}
                   </ul>
                 </Card>
               ))}
@@ -368,7 +401,15 @@ const App: React.FC = () => {
                 <Card key={mission.missionNumber} title={`Mission ${mission.missionNumber}: ${mission.title}`}>
                   <p className="text-xs text-gray-400 mb-2"><strong>Objective:</strong> {mission.objective}</p>
                   {mission.cinematicNotes && <div className="mb-3"><h5 className="font-semibold text-yellow-500/80 text-sm">Cinematic Notes</h5><p className="text-xs">{mission.cinematicNotes.join(', ')}</p></div>}
-                  <div className="mb-3"><h5 className="font-semibold text-yellow-500/80 text-sm">Key Scripted Moments</h5><ul className="list-disc list-inside text-xs">{mission.scriptedMoments.map(m => <li key={m.title}><strong>{m.title}:</strong> {m.description}</li>)}</ul></div>
+                  <div className="mb-3">
+                    <h5 className="font-semibold text-yellow-500/80 text-sm">Key Scripted Moments</h5>
+                    <ul className="list-disc list-inside text-xs">
+                      {mission.scriptedMoments.map((momentString, i) => {
+                        const moment = parseMissionScriptedMoment(momentString);
+                        return <li key={i}><strong>{moment.title}:</strong> {moment.description}</li>;
+                      })}
+                    </ul>
+                  </div>
                   <div><h5 className="font-semibold text-yellow-500/80 text-sm">Ending Cutscene</h5><p className="text-xs">{mission.endingCutscene}</p></div>
                 </Card>
               ))}
@@ -467,17 +508,12 @@ const App: React.FC = () => {
                     <div key={i} className={`py-3 ${i < node.choices.length - 1 ? 'border-b border-gray-700' : ''}`}>
                       <p className="font-bold text-yellow-400 mb-2">Choice: {choice.choice}</p>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
-                        {choice.impacts.map((impactStr, j) => {
-                            const parts = impactStr.split('→');
-                            const impact = parts[0] || '';
-                            const consequence = parts.slice(1).join('→').trim();
-                            return (
-                              <div key={j} className="bg-gray-900/50 p-2 rounded">
-                                <p className="font-semibold text-gray-300">{impact.trim()}</p>
-                                {consequence && <p className="text-xs text-gray-400">{consequence}</p>}
-                              </div>
-                            );
-                          })}
+                        {/* Fix: `impacts` is an array of strings, not objects with 'impact' and 'consequence' */}
+                        {choice.impacts.map((impactString, j) => (
+                          <div key={j} className="bg-gray-900/50 p-2 rounded">
+                            <p className="font-semibold text-gray-300">{impactString}</p>
+                          </div>
+                        ))}
                       </div>
                     </div>
                   ))}
