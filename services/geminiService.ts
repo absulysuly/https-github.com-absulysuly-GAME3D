@@ -14,16 +14,7 @@ const schema = {
             description: { type: Type.STRING },
             dialogue: {
               type: Type.ARRAY,
-              items: {
-                type: Type.OBJECT,
-                properties: {
-                  character: { type: Type.STRING },
-                  line: { type: Type.STRING },
-                  language: { type: Type.STRING },
-                  note: { type: Type.STRING },
-                },
-                required: ['character', 'line', 'language']
-              }
+              items: { type: Type.STRING }
             }
           },
           required: ['scene', 'description', 'dialogue']
@@ -41,13 +32,7 @@ const schema = {
                   lines: {
                     type: Type.ARRAY,
                     items: {
-                      type: Type.OBJECT,
-                      properties: {
-                        language: { type: Type.STRING },
-                        line: { type: Type.STRING },
-                        translation: { type: Type.STRING },
-                      },
-                      required: ['language', 'line', 'translation']
+                      type: Type.STRING
                     }
                   }
                 },
@@ -479,12 +464,7 @@ const schema = {
                         impacts: {
                           type: Type.ARRAY,
                           items: {
-                            type: Type.OBJECT,
-                            properties: {
-                              impact: { type: Type.STRING },
-                              consequence: { type: Type.STRING },
-                            },
-                            required: ['impact', 'consequence'],
+                            type: Type.STRING
                           }
                         },
                       },

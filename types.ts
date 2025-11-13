@@ -2,19 +2,13 @@
 export interface CutsceneScript {
   scene: string;
   description: string;
-  dialogue: { character: string, line: string, language: string, note?: string }[];
-}
-
-export interface VoiceLine {
-  language: string;
-  line: string;
-  translation: string;
+  dialogue: string[];
 }
 
 export interface VoiceActingScript {
   character: string;
   type: string;
-  lines: VoiceLine[];
+  lines: string[];
 }
 
 export interface VoiceActingScriptPack {
@@ -196,14 +190,9 @@ export interface EmotionalBonds {
   bonds: EmotionalBond[];
 }
 
-export interface BranchImpact {
-  impact: string;
-  consequence: string;
-}
-
 export interface DecisionChoice {
   choice: string;
-  impacts: BranchImpact[];
+  impacts: string[];
 }
 
 export interface KeyDecisionNode {
